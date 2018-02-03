@@ -31,32 +31,98 @@ def get(path, params={}, headers={}):
 			raise PlayerNotFound(status_code, "Could not find a player by given username", json)
 
 def get_player(username):
+	"""
+	Use this method to get player information, player status and player ban flags.
+
+	Args:
+		username (:obj:`str`): username of a KAG player.
+
+	Returns:
+		:class:`kag.objects.Player`
+	"""
 	json = get(f"/player/{username}")
 	return Player(json)
 
 def get_player_info(username):
+	"""
+	Use this method to get only player information.
+
+	Args:
+		username (:obj:`str`): username of a KAG player.
+
+	Returns:
+		:class:`kag.objects.PlayerInfo`
+	"""
 	json = get(f"/player/{username}/info")
 	return PlayerInfo(json["playerInfo"])
 
 def get_player_status(username):
+	"""
+	Use this method to get only player status.
+
+	Args:
+		username (:obj:`str`): username of a KAG player.
+
+	Returns:
+		:class:`kag.objects.PlayerStatus`
+	"""
 	json = get(f"/player/{username}/status")
 	return PlayerStatus(json["playerStatus"])
 
 def get_player_myinfo(username, password):
+	"""
+	Use this method to get player's private info. Same as :obj:`kag.get_player_info`, but returns two more fileds: `receive_emails` and `terms_accepted`.
+
+	Args:
+		username (:obj:`str`): username of a KAG account.
+		password (:obj:`str`): password of a KAG account.
+
+	Returns:
+		:class:`kag.objects.PlayerInfoPrivate`
+	"""
 	headers = http_basic_base64_auth(username, password)
 	json = get(f"/player/{username}/myinfo", headers)
 	return PlayerInfoPrivate(json)
 
 def get_player_foruminfo(username, password):
+	"""
+	Use this method to get player's private forum info. Same as :obj:`kag.get_player_info`, but returns two more fileds: `email` and `user_id`.
+
+	Args:
+		username (:obj:`str`): username of a KAG account.
+		password (:obj:`str`): password of a KAG account.
+
+	Returns:
+		:class:`kag.objects.PlayerInfoForum`
+	"""
 	headers = http_basic_base64_auth(username, password)
 	json = get(f"/player/{username}/foruminfo", headers)
 	return PlayerInfoForum(json)
 
 def get_player_banflags(username):
+	"""
+	Use this method to get player's ban flags.
+
+	Args:
+		username (:obj:`str`): username of a KAG account.
+
+	Returns:
+		:class:`kag.objects.PlayerBanFlags`
+	"""
 	json = get(f"/player/{username}/banflags")
 	return PlayerBanFlags(json)
 
 def get_player_avatar(username, size=None):
+	"""
+	Use this method to get player's avatar urls.
+
+	Args:
+		username (:obj:`str`): username of a KAG account.
+		size (:obj:`str`, optional): pass only ``l`` (large), ``m`` (medium) or ``s`` (small).
+
+	Returns:
+		:obj:`str`: if size is specified, :class:`kag.objects.PlayerAvatar` otherwise.
+	"""
 	path = f"/player/{username}/avatar"
 	if (size):
 		path += "/" + size
