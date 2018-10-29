@@ -3,6 +3,8 @@ import kag
 
 
 class KAGObject:
+	def __init__(self, json):
+		self.json = json
 	def __str__(self):
 		return _json.dumps(self.json)
 	def __repr__(self):
